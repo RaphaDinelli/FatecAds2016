@@ -1,3 +1,5 @@
+# Fazer, em SPIM, um algoritmo que leia 15 números, a partir de uma estrutura de laço e diga qual o menor 
+
 .data
 	msg1: .asciiz"\nDigite um numero inteiro: "
 	msg2: .asciiz"\nO menor numero e o: "
