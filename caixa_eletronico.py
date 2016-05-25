@@ -77,35 +77,47 @@ def copia(x):
 
 
 def validarSaque(valor1):
-    saldo_total()
     valor = valor1
     copia(0)
+    valido = True
+    cont = 0
     if valor1 > saldo_caixa:
         print("EXCEDEU O LIMITE DO CAIXA!")
         return False
     while valor > 0:
         if valor == 11:
-            caixa[3][4] = caixa[3][4] - 1
-            caixa[3][5] = caixa[3][5] - 3
+            caixa[2][4] = caixa[2][4] - 1
+            caixa[2][5] = caixa[2][5] - 3
             valor = valor - 11
             break
         elif valor == 13:
-            caixa[3][4] = caixa[3][4] - 1
-            caixa[3][4] = caixa[3][4] - 4
+            caixa[2][4] = caixa[2][4] - 1
+            caixa[2][4] = caixa[2][4] - 4
             valor = valor - 13
             break
         else:
-            cont = 0
-            for i in range(len(caixa[0])):
-                while valor > caixa[0][cont]:
-                    if caixa[3][cont] > 0:
-                        caixa[3][cont] = caixa[3][cont] - 1
-                        valor = valor - caixa[0][cont]
+            while valor >= caixa[0][cont]:
+                if caixa[2][cont] > 0:
+                    caixa[2][cont] = caixa[2][cont] - 1
+                    valor = valor - caixa[0][cont]
+                    if valor < caixa[0][cont] and valor != 0:
+                        cont += 1
+                    elif valor == 0:
+                        return valido
+                else:
+                    cont += 1
+                    if cont > len(caixa[1]):
+                        return False
                     else:
-                        if i < len(caixa[1]):
-                            break
-                        else:
-                            continue
+                        continue
+            else:
+                cont += 1
+    if valor != 0:
+    	valido = False
+    for i in range(len(caixa[2])):
+    	if caixa[2][i] < 0:
+    		valido = False
+    return valido
                         
     def menu():
         print("------------ CAIXA ELETRÔNICO ------------\n\n")
