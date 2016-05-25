@@ -107,6 +107,7 @@ def validarSaque(valor1):
                 else:
                     cont += 1
                     if cont > len(caixa[1]):
+                    	print("NOTAS INSUFICIENTES PARA ESTA OPERAÇÃO")
                         return False
                     else:
                         continue
@@ -117,29 +118,58 @@ def validarSaque(valor1):
     for i in range(len(caixa[2])):
     	if caixa[2][i] < 0:
     		valido = False
-    return valido
+    if valido:
+    	return valido
+    else:
+    	print("NOTAS INSUFICIENTES PARA ESTA OPERAÇÃO")
+    	return valido
+    
+def retirada():
+	limpa_tela()
+	copiar(0)
+	print("$$$ --- RETIRADA DE NOTAS --- $$$\n\n")
+	saque = int(input("Digite o valor do saque: "))
+	
+	if validarSaque(saque):
+		escolha_notas(saque)
+		
+def escolha_notas(valor):
+	limpa_tela()
+	retirada = valor
+	while retirada > 0:
+		print("Escolha as notas desejadas: ")
+		for i in range(len(caixa[0])):
+			if caixa[0][i] <= retirada and caixa[1][i] > 0:
+				sub = - (int(input("Quantidade de notas de R$%s" %caixa[0][i]))
+				caixa[2][i] -= sub
+				retirada -= caixa[0][i]
+				if caixa[2][i] < 0 or retirada < 0:
+					retirada = valor
+					copiar(0)
+					print("EXCEDEU O LIMITE DO VALOR SOLICITADO\n")
+					print("ESCOLHA NOVAMENTE")
+					escolha_notas(valor)
+	print("Valor de R$%s, retirado com sucesso!" %valor)
+	copiar(1)
+	
                         
-    def menu():
-        print("------------ CAIXA ELETRÔNICO ------------\n\n")
-        print("\tMenu Principal\n")
-        print("1 - Carregar notas")
-        print("2 - Retirar notas")
-        print("3 - Estatísticas")
-        print("9 - Fim\n")
+def menu():
+    print("------------ CAIXA ELETRÔNICO ------------\n\n")
+    print("\tMenu Principal\n")
+    print("1 - Carregar notas")
+    print("2 - Retirar notas")
+    print("3 - Estatísticas")
+    print("9 - Fim\n")
 
-        opc = int(input("\nDigite a opção desejada: "))
+    opc = int(input("\nDigite a opção desejada: "))
 
-        while opc != 9:
-            if opc == 1:
-                carregar_notas()
-            elif opc == 2:
-                retirar_notas()
-            elif opc == 3:
-                estatisticas()
+    while opc != 9:
+        if opc == 1:
+            carregar_notas()
+        elif opc == 2:
+            retirar_notas()
+        elif opc == 3:
+            estatisticas()
 
-        print("\n" * 100)
-        print("CAIXA ELETRONICO FINALIZADO")
-
-carregar_notas()
-saldo_total()
-
+    print("\n" * 100)
+    print("CAIXA ELETRONICO FINALIZADO")
