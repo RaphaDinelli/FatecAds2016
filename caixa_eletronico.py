@@ -44,6 +44,10 @@ def mostrar_notas(x):
         for i in range(len(caixa[0])):
             if caixa[1][i] > 0:
                 print((i + 1), " -- R$", caixa[0][i])
+             
+def mostra_bancos():
+	for i in range(len(bancos[0])):
+		print("%s - %s" %(i, bancos[0][i]))
 
 
 def saldo_total():
@@ -129,15 +133,26 @@ def validarSaque(valor1):
     else:
     	print("NOTAS INSUFICIENTES PARA ESTA OPERAÇÃO")
     	return valido
+    	
+def registra_banco(esc, valor):
+	bancos[3][esc -1] += valor 
+	if valor > bancos[1][esq-1]:
+		bancos[1][esq-1] = valor
+	else
+		if valor < bancos[2][esq-1] or bancos[2][esq-1] == 0:
+			bancos[2][esq-1] = valor
     
 def retirada():
 	limpa_tela()
 	copia(0)
 	print("$$$ --- RETIRADA DE NOTAS --- $$$\n\n")
+	mostra_bancos() 
+	escolha_banco = int(input("Digite o código do banco desejado\n"))
 	saque = int(input("Digite o valor do saque: "))
 	
 	if validarSaque(saque):
 		escolha_notas(saque)
+		registra_banco(escolha_banco, saque)
 		
 def escolha_notas(valor):
 	limpa_tela()
@@ -161,7 +176,6 @@ def escolha_notas(valor):
 	print("Valor de R$%s, retirado com sucesso!" %valor)
 	copia(1)
 	
-                        
 def menu():
     while True:
     	print("------------ CAIXA ELETRÔNICO ------------\n\n")
