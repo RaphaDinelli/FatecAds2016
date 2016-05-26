@@ -15,6 +15,7 @@ CAIXA ELETRÔNICO
 1.8.3. Valor total dos saques;
 1.8.4. Valor das sobras dos caixas.
 '''
+from time import sleep
 
 caixa = [
     (100, 50, 20, 10, 5, 2),
@@ -48,11 +49,13 @@ def mostrar_notas(x):
 
 def mostra_bancos():
     for i in range(len(bancos[0])):
-        print("%s - %s" % (i, bancos[0][i]))
+        print("%s - %s" % ((i + 1), bancos[0][i]))
+    print("\n$--------------------------------$\n")
 
 
 def saldo_total():
     global saldo_caixa
+    saldo_caixa = 0
     for i in range(len(caixa[0])):
         saldo_caixa = saldo_caixa + (caixa[0][i] * caixa[1][i])
 
@@ -61,7 +64,7 @@ def carregar_notas():
     print("CARREGAR NOTAS\n\n")
     for i in range(len(caixa[0])):
         print("Digite a quantidade de notas de R$%i" % (caixa[0][i]))
-        caixa[1][i] = int(input())
+        caixa[1][i] += int(input())
         limpa_tela()
         saldo_total()
         print("Saldo do caixa: R$%s\n" % saldo_caixa)
@@ -69,6 +72,9 @@ def carregar_notas():
             if caixa[1][j] > 0:
                 print("Nota de R$", caixa[0][j], "--- Quantidade: ", caixa[1][j])
         print("\n")
+    print("CARREGAMENTO COMPLETO")
+    sleep(5)
+    limpa_tela()
 
 
 def copia(x):
@@ -137,25 +143,32 @@ def validarSaque(valor1):
 
 
 def registra_banco(esc, valor):
-    bancos[3][esc - 1] += valor
-    if valor > bancos[1][esc - 1]:
-        bancos[1][esc - 1] = valor
+    esc -= 1
+    bancos[3][esc] += valor
+    if valor > bancos[1][esc]:
+        bancos[1][esc] = valor
     else:
-        if valor < bancos[2][esc - 1] or bancos[2][esc - 1] == 0:
-            bancos[2][esc - 1] = valor
+        if valor < bancos[2][esc] or bancos[2][esc] == 0:
+            bancos[2][esc] = valor
 
 
 def retirada():
+    global limiteSaques
     limpa_tela()
     copia(0)
-    print("$$$ --- RETIRADA DE NOTAS --- $$$\n\n")
-    mostra_bancos()
-    escolha_banco = int(input("Digite o código do banco desejado\n"))
-    saque = int(input("Digite o valor do saque: "))
-
-    if validarSaque(saque):
-        escolha_notas(saque)
-        registra_banco(escolha_banco, saque)
+    if limiteSaques > 0:
+        print("$$$ --- RETIRADA DE NOTAS --- $$$\n\n")
+        mostra_bancos()
+        escolha_banco = int(input("Digite o código do banco desejado\n"))
+        saque = int(input("Digite o valor do saque: "))
+        if validarSaque(saque):
+            escolha_notas(saque)
+            registra_banco(escolha_banco, saque)
+            limiteSaques -= 1
+    else:
+        print("LIMITE DO NÚMERO DE SAQUES EXCEDIDO!\n")
+        sleep(5)
+        limpa_tela()
 
 
 def escolha_notas(valor):
@@ -164,21 +177,40 @@ def escolha_notas(valor):
     while retirada > 0:
         print("Escolha as notas desejadas: ")
         for i in range(len(caixa[0])):
-            print("VALOR SOLICITADO: R$%s    |    VALOR RETIRADO: R$%s" % (valor, retirada))
             if caixa[0][i] <= retirada and caixa[1][i] > 0:
                 if retirada == 0:
                     break
                 else:
-                    sub = - (int(input("Quantidade de notas de R$%s" % caixa[0][i])))
+                    print("VALOR SOLICITADO: R$%s    |    VALOR RETIRADO: R$%s" % (valor, (valor - retirada)))
+                    sub = (int(input("Quantidade de notas de R$%s: " % caixa[0][i])))
                     caixa[2][i] -= sub
-                    retirada -= caixa[0][i]
+                    retirada -= caixa[0][i] * sub
                     if caixa[2][i] < 0 or retirada < 0:
                         retirada = valor
                         copia(0)
                         print("EXCEDEU O LIMITE DO VALOR SOLICITADO\n")
                         print("ESCOLHA NOVAMENTE")
-    print("Valor de R$%s, retirado com sucesso!" % valor)
+    print("\n\nValor de R$%s, retirado com sucesso!" % valor)
+    sleep(5)
     copia(1)
+    limpa_tela()
+
+
+def estatisticas():
+    limpa_tela()
+    print("ESTATÍSTICAS\n")
+    mostra_bancos()
+    escolha_banco = int(input("\nDigite o código do banco escolhido: "))
+    limpa_tela()
+    escolha_banco -= 1
+    print("$$$----%s----$$$\n" % bancos[0][escolha_banco])
+    print("\nVALOR TOTAL SACADO : R$%s" % bancos[3][escolha_banco])
+    print("MAIOR VALOR SACADO: R$%s" % bancos[1][escolha_banco])
+    print("MENOR VALOR SACADO: R$%s\n" % bancos[2][escolha_banco])
+    print("SOBRA DO CAIXA: R$%s\n" % saldo_caixa)
+
+    input("Digite enter para terminar!")
+    limpa_tela()
 
 
 def menu():
@@ -189,17 +221,22 @@ def menu():
         print("2 - Retirar notas")
         print("3 - Estatísticas")
         print("9 - Fim\n")
-        opc = int(input("\nDigite a opção desejada: "))
-        if opc == 1:
-            carregar_notas()
-        elif opc == 2:
-            retirada()
-        elif opc == 3:
-            estatisticas()
-        elif opc == 9:
-            break
-        else:
-            print("OPÇÃO INVALIDA")
+        try:
+            opc = int(input("\nDigite a opção desejada: "))
+            if opc == 1:
+                carregar_notas()
+            elif opc == 2:
+                retirada()
+            elif opc == 3:
+                estatisticas()
+            elif opc == 9:
+                break
+            else:
+                print("OPÇÃO INVALIDA")
+                sleep(5)
+                limpa_tela()
+        except:
+            print("Entrada inválida!")
 
     print("\n" * 100)
     print("CAIXA ELETRONICO FINALIZADO")
