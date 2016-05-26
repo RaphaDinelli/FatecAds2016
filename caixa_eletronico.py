@@ -126,7 +126,7 @@ def validarSaque(valor1):
     
 def retirada():
 	limpa_tela()
-	copiar(0)
+	copia(0)
 	print("$$$ --- RETIRADA DE NOTAS --- $$$\n\n")
 	saque = int(input("Digite o valor do saque: "))
 	
@@ -139,16 +139,19 @@ def escolha_notas(valor):
 	while retirada > 0:
 		print("Escolha as notas desejadas: ")
 		for i in range(len(caixa[0])):
+			print("VALOR SOLICITADO: R$%s    |    VALOR RETIRADO: R$%s" %(valor, retirada) )
 			if caixa[0][i] <= retirada and caixa[1][i] > 0:
-				sub = - (int(input("Quantidade de notas de R$%s" %caixa[0][i]))
-				caixa[2][i] -= sub
-				retirada -= caixa[0][i]
-				if caixa[2][i] < 0 or retirada < 0:
-					retirada = valor
-					copiar(0)
-					print("EXCEDEU O LIMITE DO VALOR SOLICITADO\n")
-					print("ESCOLHA NOVAMENTE")
-					escolha_notas(valor)
+				if retirada == 0:
+					break
+				else:
+					sub = - (int(input("Quantidade de notas de R$%s" %caixa[0][i]))
+					caixa[2][i] -= sub
+					retirada -= caixa[0][i]
+					if caixa[2][i] < 0 or retirada < 0:
+						retirada = valor
+						copia(0)
+						print("EXCEDEU O LIMITE DO VALOR SOLICITADO\n")
+						print("ESCOLHA NOVAMENTE")
 	print("Valor de R$%s, retirado com sucesso!" %valor)
 	copiar(1)
 	
