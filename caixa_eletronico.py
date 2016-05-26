@@ -44,10 +44,11 @@ def mostrar_notas(x):
         for i in range(len(caixa[0])):
             if caixa[1][i] > 0:
                 print((i + 1), " -- R$", caixa[0][i])
-             
+
+
 def mostra_bancos():
-	for i in range(len(bancos[0])):
-		print("%s - %s" %(i, bancos[0][i]))
+    for i in range(len(bancos[0])):
+        print("%s - %s" % (i, bancos[0][i]))
 
 
 def saldo_total():
@@ -106,95 +107,99 @@ def validarSaque(valor1):
                     valor = valor - caixa[0][cont]
                     if valor < caixa[0][cont] and valor != 0:
                         cont += 1
-                        if cont > len(caixa[1])-1:
-                        	print("NOTAS INSUFICIENTES PARA ESTA OPERAÇÃO")
-                        	return False
+                        if cont > len(caixa[1]) - 1:
+                            print("NOTAS INSUFICIENTES PARA ESTA OPERAÇÃO")
+                            return False
                     elif valor == 0:
                         return valido
                 else:
                     cont += 1
-                    if cont > len(caixa[1])-1:
-                    	print("NOTAS INSUFICIENTES PARA ESTA OPERAÇÃO")
-                    	return False
+                    if cont > len(caixa[1]) - 1:
+                        print("NOTAS INSUFICIENTES PARA ESTA OPERAÇÃO")
+                        return False
                     else:
-                    	continue
+                        continue
             else:
                 cont += 1
-                if cont > len(caixa[1])-1:
-                	print("NOTAS INSUFICIENTES PARA ESTA OPERAÇÃO")
-                	return False
+                if cont > len(caixa[1]) - 1:
+                    print("NOTAS INSUFICIENTES PARA ESTA OPERAÇÃO")
+                    return False
     if valor != 0:
-    	valido = False
+        valido = False
     for i in range(len(caixa[2])):
-    	if caixa[2][i] < 0:
-    		valido = False
+        if caixa[2][i] < 0:
+            valido = False
     if valido:
-    	return valido
+        return valido
     else:
-    	print("NOTAS INSUFICIENTES PARA ESTA OPERAÇÃO")
-    	return valido
-    	
+        print("NOTAS INSUFICIENTES PARA ESTA OPERAÇÃO")
+        return valido
+
+
 def registra_banco(esc, valor):
-	bancos[3][esc -1] += valor 
-	if valor > bancos[1][esq-1]:
-		bancos[1][esq-1] = valor
-	else
-		if valor < bancos[2][esq-1] or bancos[2][esq-1] == 0:
-			bancos[2][esq-1] = valor
-    
+    bancos[3][esc - 1] += valor
+    if valor > bancos[1][esc - 1]:
+        bancos[1][esc - 1] = valor
+    else:
+        if valor < bancos[2][esc - 1] or bancos[2][esc - 1] == 0:
+            bancos[2][esc - 1] = valor
+
+
 def retirada():
-	limpa_tela()
-	copia(0)
-	print("$$$ --- RETIRADA DE NOTAS --- $$$\n\n")
-	mostra_bancos() 
-	escolha_banco = int(input("Digite o código do banco desejado\n"))
-	saque = int(input("Digite o valor do saque: "))
-	
-	if validarSaque(saque):
-		escolha_notas(saque)
-		registra_banco(escolha_banco, saque)
-		
+    limpa_tela()
+    copia(0)
+    print("$$$ --- RETIRADA DE NOTAS --- $$$\n\n")
+    mostra_bancos()
+    escolha_banco = int(input("Digite o código do banco desejado\n"))
+    saque = int(input("Digite o valor do saque: "))
+
+    if validarSaque(saque):
+        escolha_notas(saque)
+        registra_banco(escolha_banco, saque)
+
+
 def escolha_notas(valor):
-	limpa_tela()
-	retirada = valor
-	while retirada > 0:
-		print("Escolha as notas desejadas: ")
-		for i in range(len(caixa[0])):
-			print("VALOR SOLICITADO: R$%s    |    VALOR RETIRADO: R$%s" %(valor, retirada) )
-			if caixa[0][i] <= retirada and caixa[1][i] > 0:
-				if retirada == 0:
-					break
-				else:
-					sub = - (int(input("Quantidade de notas de R$%s" %caixa[0][i])))
-					caixa[2][i] -= sub
-					retirada -= caixa[0][i]
-					if caixa[2][i] < 0 or retirada < 0:
-						retirada = valor
-						copia(0)
-						print("EXCEDEU O LIMITE DO VALOR SOLICITADO\n")
-						print("ESCOLHA NOVAMENTE")
-	print("Valor de R$%s, retirado com sucesso!" %valor)
-	copia(1)
-	
+    limpa_tela()
+    retirada = valor
+    while retirada > 0:
+        print("Escolha as notas desejadas: ")
+        for i in range(len(caixa[0])):
+            print("VALOR SOLICITADO: R$%s    |    VALOR RETIRADO: R$%s" % (valor, retirada))
+            if caixa[0][i] <= retirada and caixa[1][i] > 0:
+                if retirada == 0:
+                    break
+                else:
+                    sub = - (int(input("Quantidade de notas de R$%s" % caixa[0][i])))
+                    caixa[2][i] -= sub
+                    retirada -= caixa[0][i]
+                    if caixa[2][i] < 0 or retirada < 0:
+                        retirada = valor
+                        copia(0)
+                        print("EXCEDEU O LIMITE DO VALOR SOLICITADO\n")
+                        print("ESCOLHA NOVAMENTE")
+    print("Valor de R$%s, retirado com sucesso!" % valor)
+    copia(1)
+
+
 def menu():
     while True:
-    	print("------------ CAIXA ELETRÔNICO ------------\n\n")
-    	print("\tMenu Principal\n")
-    	print("1 - Carregar notas")
-    	print("2 - Retirar notas")
-    	print("3 - Estatísticas")
-    	print("9 - Fim\n")
-    	opc = int(input("\nDigite a opção desejada: "))
-    	if opc == 1:
-    		carregar_notas()
-    	elif opc == 2:
-    		retirada()
-    	elif opc == 3:
-    		estatisticas()
-    	elif opc == 9:
-    		break
-    	else:
-    		print("OPÇÃO INVALIDA")
+        print("------------ CAIXA ELETRÔNICO ------------\n\n")
+        print("\tMenu Principal\n")
+        print("1 - Carregar notas")
+        print("2 - Retirar notas")
+        print("3 - Estatísticas")
+        print("9 - Fim\n")
+        opc = int(input("\nDigite a opção desejada: "))
+        if opc == 1:
+            carregar_notas()
+        elif opc == 2:
+            retirada()
+        elif opc == 3:
+            estatisticas()
+        elif opc == 9:
+            break
+        else:
+            print("OPÇÃO INVALIDA")
 
     print("\n" * 100)
     print("CAIXA ELETRONICO FINALIZADO")
