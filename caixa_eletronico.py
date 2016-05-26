@@ -102,17 +102,23 @@ def validarSaque(valor1):
                     valor = valor - caixa[0][cont]
                     if valor < caixa[0][cont] and valor != 0:
                         cont += 1
+                        if cont > len(caixa[1])-1:
+                        	print("NOTAS INSUFICIENTES PARA ESTA OPERAÇÃO")
+                        	return False
                     elif valor == 0:
                         return valido
                 else:
                     cont += 1
-                    if cont > len(caixa[1]):
+                    if cont > len(caixa[1])-1:
                     	print("NOTAS INSUFICIENTES PARA ESTA OPERAÇÃO")
-                        return False
+                    	return False
                     else:
-                        continue
+                    	continue
             else:
                 cont += 1
+                if cont > len(caixa[1])-1:
+                	print("NOTAS INSUFICIENTES PARA ESTA OPERAÇÃO")
+                	return False
     if valor != 0:
     	valido = False
     for i in range(len(caixa[2])):
@@ -144,7 +150,7 @@ def escolha_notas(valor):
 				if retirada == 0:
 					break
 				else:
-					sub = - (int(input("Quantidade de notas de R$%s" %caixa[0][i]))
+					sub = - (int(input("Quantidade de notas de R$%s" %caixa[0][i])))
 					caixa[2][i] -= sub
 					retirada -= caixa[0][i]
 					if caixa[2][i] < 0 or retirada < 0:
@@ -153,26 +159,28 @@ def escolha_notas(valor):
 						print("EXCEDEU O LIMITE DO VALOR SOLICITADO\n")
 						print("ESCOLHA NOVAMENTE")
 	print("Valor de R$%s, retirado com sucesso!" %valor)
-	copiar(1)
+	copia(1)
 	
                         
 def menu():
-    print("------------ CAIXA ELETRÔNICO ------------\n\n")
-    print("\tMenu Principal\n")
-    print("1 - Carregar notas")
-    print("2 - Retirar notas")
-    print("3 - Estatísticas")
-    print("9 - Fim\n")
-
-    opc = int(input("\nDigite a opção desejada: "))
-
-    while opc != 9:
-        if opc == 1:
-            carregar_notas()
-        elif opc == 2:
-            retirar_notas()
-        elif opc == 3:
-            estatisticas()
+    while True:
+    	print("------------ CAIXA ELETRÔNICO ------------\n\n")
+    	print("\tMenu Principal\n")
+    	print("1 - Carregar notas")
+    	print("2 - Retirar notas")
+    	print("3 - Estatísticas")
+    	print("9 - Fim\n")
+    	opc = int(input("\nDigite a opção desejada: "))
+    	if opc == 1:
+    		carregar_notas()
+    	elif opc == 2:
+    		retirada()
+    	elif opc == 3:
+    		estatisticas()
+    	elif opc == 9:
+    		break
+    	else:
+    		print("OPÇÃO INVALIDA")
 
     print("\n" * 100)
     print("CAIXA ELETRONICO FINALIZADO")
