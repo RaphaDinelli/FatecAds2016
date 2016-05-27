@@ -190,6 +190,7 @@ def escolha_notas(valor):
                         copia(0)
                         print("EXCEDEU O LIMITE DO VALOR SOLICITADO\n")
                         print("ESCOLHA NOVAMENTE")
+                        break
     print("\n\nValor de R$%s, retirado com sucesso!" % valor)
     sleep(5)
     copia(1)
