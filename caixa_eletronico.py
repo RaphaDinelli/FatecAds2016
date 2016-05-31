@@ -201,9 +201,16 @@ def registra_banco(esc, valor):
 
 
 def retirada():
+	'''
+	Efetua saques do caixa, solicita o banco, o valor e o valor a ser retirado, verifica se é possível retirar o valor solicitado
+	
+	e se positivo chama a função para escolha das notas.
+	'''
     global limiteSaques
     limpa_tela()
     copia(0)
+    
+    # Verifica se não foi ultrapassado o número máximo de saques, e prossegue com as verificações 
     if limiteSaques > 0:
         print("$$$ --- RETIRADA DE NOTAS --- $$$\n\n")
         mostra_bancos()
@@ -220,11 +227,18 @@ def retirada():
 
 
 def escolha_notas(valor):
+	'''
+	Solicita ao usuário a escolha das notas referente ao saque.
+	'''
     limpa_tela()
     retirada = valor
+    
+    # Solicita a escolha de notas ao usuário enquanto ainda ouver valor a ser sacado.
     while retirada > 0:
         print("Escolha as notas desejadas: ")
         for i in range(len(caixa[0])):
+        	
+        	# Oferece a opção de escolha da próxima nota menor ou igual ao valor de saque restante.
             if caixa[0][i] <= retirada and caixa[1][i] > 0:
                 if retirada == 0:
                     break
