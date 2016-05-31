@@ -17,17 +17,23 @@ CAIXA ELETRÔNICO
 '''
 from time import sleep
 
+# A primeira linha refere-se aos tipos de notas, a segunda a quantidade e a terceira são registradores
+# temporários da quantidade de notas para as auxíliar nas operações 
 caixa = [
-    (100, 50, 20, 10, 5, 2),
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0]
+    (100, 50, 20, 10, 5, 2), 
+    [0, 0, 0, 0, 0, 0], 
+    [0, 0, 0, 0, 0, 0] 
 ]
+
+# A primeira linha refere-se aos tipos de bancos, a segunda linha ao maior valor sacado,
+# a terceira linha ao menor valor sacado e a ultima linha ao valor total sacado.
 bancos = [
-    ("Banco do Brasil", "Santander", "Itaú", "Caixa"),
+    ("Banco do Brasil", "Santander", "Itaú", "Caixa"),  # Tipos de bancos disponpiveis
     [0, 0, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0]
 ]
+
 
 limiteSaques = 100
 saldo_caixa = 0
@@ -36,8 +42,11 @@ saldo_caixa = 0
 def limpa_tela():
     print("\n" * 100)
 
-
 def mostrar_notas(x):
+	'''
+	Se x for maior que 0 mostra as notas caso a quantidade (caixa[1][y]) for maior que 0.
+	Do contrário mostra todas as notas.
+	'''
     if x > 0:
         for i in range(len(caixa[0])):
             print((i + 1), " -- R$", caixa[0][i])
@@ -48,12 +57,18 @@ def mostrar_notas(x):
 
 
 def mostra_bancos():
+	'''
+	Mostra os bancos.
+	'''
     for i in range(len(bancos[0])):
         print("%s - %s" % ((i + 1), bancos[0][i]))
     print("\n$--------------------------------$\n")
 
 
 def saldo_total():
+	'''
+	Atualiza o saldo do caixa multiplicando a quantidade de notas pelo seu valor.
+	'''
     global saldo_caixa
     saldo_caixa = 0
     for i in range(len(caixa[0])):
@@ -61,13 +76,20 @@ def saldo_total():
 
 
 def carregar_notas():
+	'''
+	Carrega as notas no caixa.
+	'''
     print("CARREGAR NOTAS\n\n")
+    
+    # Carrega a quantidade de cada tipo de nota do caixa (caixa[0][x])
     for i in range(len(caixa[0])):
         print("Digite a quantidade de notas de R$%i" % (caixa[0][i]))
         caixa[1][i] += int(input())
         limpa_tela()
         saldo_total()
         print("Saldo do caixa: R$%s\n" % saldo_caixa)
+        
+        # Mostra a quantidade atual de cada nota caso seja maior que 0.
         for j in range(len(caixa[0])):
             if caixa[1][j] > 0:
                 print("Nota de R$", caixa[0][j], "--- Quantidade: ", caixa[1][j])
@@ -78,6 +100,12 @@ def carregar_notas():
 
 
 def copia(x):
+	'''
+	Caso valor seja 1 copia para a linha de quantidade de notas (caixa[1][x]) o valor 
+	dos registradores temporários (caixa[2][x]).
+	
+	Caso valor seja 0 copia para os registradores temporários o valor da quantidade de notas.
+	'''
     if x > 0:
         for i in range(len(caixa[1])):
             caixa[1][i] = caixa[2][i]
@@ -88,14 +116,22 @@ def copia(x):
 
 
 def validarSaque(valor1):
+	'''
+	Verifica se é possível sacar o valor solicitado dentro das possibilidades disponíveis conforme, 
+	a quantidade de notas e saldo do caixa.
+	'''
     valor = valor1
     copia(0)
     valido = True
     cont = 0
+    
+    # Verifica se o valor solicitado é menor ou igual ao saldo do caixa.
     if valor1 > saldo_caixa:
         print("EXCEDEU O LIMITE DO CAIXA!")
         return False
     while valor > 0:
+    	
+    	# Verifica se há notas de 5 e 2 disponíveis para saques que terminem em 1 ou 3 
         if valor == 11:
             caixa[2][4] = caixa[2][4] - 1
             caixa[2][5] = caixa[2][5] - 3
@@ -107,6 +143,9 @@ def validarSaque(valor1):
             valor = valor - 13
             break
         else:
+        	
+        	# Verifica se o valor pode ser sacado subtraindo a maior nota mais próxima do valor,
+        	# até que não haja mais notas daquele tipo ou que o  valor tenha sido zerado.
             while valor >= caixa[0][cont]:
                 if caixa[2][cont] > 0:
                     caixa[2][cont] = caixa[2][cont] - 1
@@ -130,6 +169,10 @@ def validarSaque(valor1):
                 if cont > len(caixa[1]) - 1:
                     print("NOTAS INSUFICIENTES PARA ESTA OPERAÇÃO")
                     return False
+    
+    # Caso o valor seja diferente de 0, ou caso a quantidade de notas nos registradores temporários, 
+    # seja negativo, significa que não há notas disponíveis para o valor solicitado.
+    
     if valor != 0:
         valido = False
     for i in range(len(caixa[2])):
@@ -143,8 +186,13 @@ def validarSaque(valor1):
 
 
 def registra_banco(esc, valor):
-    esc -= 1
-    bancos[3][esc] += valor
+	'''
+	Registra a operação de saque na matriz bancos[][]
+	'''
+    esc -= 1 # Ajusta o indice da matriz caixa[][]
+    bancos[3][esc] += valor  # Soma o valor do saque ao valor total sacado.
+    
+    # Determina o maior e o menor valor sacado.
     if valor > bancos[1][esc]:
         bancos[1][esc] = valor
     else:
@@ -241,3 +289,5 @@ def menu():
 
     print("\n" * 100)
     print("CAIXA ELETRONICO FINALIZADO")
+    
+menu()
