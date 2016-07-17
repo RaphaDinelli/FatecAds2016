@@ -1,44 +1,51 @@
 '''Caixa de bar'''
+from datetime import datetime
 
-import datetime
+class Controle_financeiro(object):
+    # Armazena como string a data atual no formato aaaa/mm/dd
+    hoje = datetime.today()
+    
+    def __init__(self):
+        self.receitas = []
+        self.despesas = []
+        
+    def gerar_datas(self, data):
+        data=data.split("/")
+        data = [int(x) for x in data]
+        data = datetime(data[3],data[2],data[1])
+        return data
+        
+    def adicionar_receitas(self, tipo, valor, data=self.hoje):
+        self.receitas.append((tipo, valor, data))
+        
+    def adicionar_despesas(self, tipo, nome, valor, vencimento):
+        self.despesas.append((tipo, nome, valor, vencimento))
+        
+    def resumo(self, periodo_inicial, periodo_final):
+        total_receitas = 0.
+        total_despesas = 0.
+        maior_receita = 0.
+        maior_despesa = 0.
 
-# tipo do produto, nome do produto, valor, quantidade, registrador temporário
-produtos = [[],[],[],[],[]]
-
-types_p = {1:"Cerveja",2:"Destilados",3:"Drinks",4:"Lanches"}
-
-
-def get_atual():
-	tempo = str(datetime.datetime.today())[:16]
-	return tempo
-	
-def abastecer_estoque():
-	print("Escolha a opção desejada: \n")
-	for i in types_p:
-		print("%s -- %s" %(i, types_p[i]))
-	opcao = int(input("\n>>"))
-	
-	nome = input("\nDigite o nome do produto: \n>>")
-	if nome not in produtos[1]:
-		produtos[0].append(opcao)
-		produtos[1].append(nome)
-	
-		valor = float(input("\nDigite o valor unitário do produto: \n>>"))
-		produtos[2].append(valor)
-	
-		qtd = int(input("\nDigite a quantidade do produto: \n>>"))
-		produtos[3].append(qtd)
-	else:
-		qtd = int(input("\nDigite a quantidade do produto: \n>>"))
-		produtos[3][(produtos[1].index(nome))] += qtd
-	
-	
-		
-	
-def show_products(type_p):
-	for i in range(len(produtos[0])):
-		if produtos[0][i] == type_p:
-			print("Nome:  %s" %produtos[1][i])
-			print("Valor: R$%.2f" %produtos[2][i])
-			print("Qtd:   %s" %produtos[3][i])
-			print("\n----------------\n")
+        for i in self.receitas:
+            if i[2] >= periodo_inicial and i[2] <= periodo_final:
+                total_receitas += i[1]
+            if i[1] > maior_receita:
+                maior_receita = i[1]
+        for i in self.despesas:
+            if i[3] >= periodo_inicial and i[4] <= periodo_final:
+                total_despesas += i[2]
+            if i[2] > maior_despesa:
+                maior_despesa = i[1]    
+                
+        print("TOTAL DE RECEITAS: R$%.2f\n" %total_receitas)
+        print("TOTAL DE DESPESAS: R$%.2f\n\n" %total_despesas)
+        print("Maior receita: R$%.2f" %maior_receita)
+        print("Maior despesa: R$%.2f" %maior_receita)
+        
+        input("\nDigite enter para voltar ao menu.\n")
+        self.menu()
+        
+        
+    def menu(self):
+        pass
