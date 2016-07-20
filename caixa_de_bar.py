@@ -18,6 +18,8 @@ def menu():
     
     if opcao == 1:
         interface_adicionar_receitas()
+    elif opcao == 3:
+    	resumo()
 
 def gerar_data(data):
     data_int = data.split("/")
@@ -74,20 +76,21 @@ def interface_adicionar_receitas():
 def adicionar_despesas(nome, tipo, valor, vencimento):
     receitas.append((nome, tipo, valor, gerar_data(vencimento)))
 
-def resumo(periodo):
-    total_receitas = 0.
-    total_despesas = 0.
-    for i in receitas:
-        if i[2] >= periodo:
-            total_receitas += i[1]
-            
-    for i in despesas:
-         if i[3] >= periodo:
-             total_despesas += i[2]
+def resumo():
+	periodo = input("Digite o período inicial para pesquisar: ")
+	periodo = gerar_data(periodo)
+	total_receitas = 0.
+	total_despesas = 0.
+	for i in receitas:
+		if i[2] >= periodo:
+			total_receitas += i[1]
+	for i in despesas:
+		if i[3] >= periodo:
+			total_despesas += i[2]
     
-    print("RESUMO\n\n")
-    print("Total das receitas: R$%.2f" % total_receitas)
-    print("Total das receitas: R$%.2f\n" % total_receitas)
-    print("Saldo: R$%.2f" % (total_receitas - total_despesas))
+	print("\nRESUMO\n\n")
+	print("Total das receitas: R$%.2f" % total_receitas)
+	print("Total das despesas: R$%.2f\n" % total_despesas)
+	print("Saldo: R$%.2f" % (total_receitas - total_despesas))
     
 menu()
