@@ -92,5 +92,7 @@ def resumo():
 	print("Total das receitas: R$%.2f" % total_receitas)
 	print("Total das despesas: R$%.2f\n" % total_despesas)
 	print("Saldo: R$%.2f" % (total_receitas - total_despesas))
+	input("\nTecle enter para continuar.")
+	menu()
     
 menu()
