@@ -95,5 +95,4 @@ def excluir_receitas():
 				break
 			else:
 				print("Operação cancelada pelo usuário!")
-
 	
