@@ -25,6 +25,7 @@ def adicionar_receitas():
 	print("=" * 59)
 	print("\n\t\t\tADICIONAR RECEITAS\n")
 	print(("=" * 59) + "\n")
+	
 	print("TIPOS DE RECEITAS\n")
 	for i in tipos_de_receitas:
 		print("%s - %s" %(i, tipos_de_receitas[i]))
