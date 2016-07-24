@@ -84,7 +84,7 @@ def excluir_receitas():
 	for i in receitas:
 		if i[0] == escolha:
 			print("Tipo de receita: %s" %i[1])
-			print("Valor: %s" %i[2])
+			print("Valor: %s" %i[2]) 
 			print("Data de recebimento: %s\n" %i[3])
 			print("-" * 59 + "\n")
 			confirma = input("Confirma a exclusão? (s/n): ")
